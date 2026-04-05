@@ -32,7 +32,7 @@ export default function App() {
     setSummary(null);
     try {
       const [d, s] = await Promise.all([
-        axios.get(`${API}/data/${symbol}`),
+        axios.get(`${API}/data/${symbol}?days=90`),
         axios.get(`${API}/summary/${symbol}`),
       ]);
       setStockData(d.data);

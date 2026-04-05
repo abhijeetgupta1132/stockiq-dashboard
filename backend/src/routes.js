@@ -13,18 +13,19 @@ router.get("/companies", (req, res) => {
   res.json({ companies: data });
 });
 
-// GET /data/:symbol — last 30 days
+// GET /data/:symbol — supports ?days=30 (default), ?days=60, ?days=90
 router.get("/data/:symbol", (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
+  const days = parseInt(req.query.days) || 30;
   const rows = db
     .prepare(
       `
     SELECT date, open, high, low, close, volume, daily_return, ma_7, volatility_score
     FROM stock_data WHERE symbol = ?
-    ORDER BY date DESC LIMIT 30
+    ORDER BY date DESC LIMIT ?
   `,
     )
-    .all(symbol);
+    .all(symbol, days);
 
   if (!rows.length)
     return res.status(404).json({ error: `No data for ${symbol}` });
