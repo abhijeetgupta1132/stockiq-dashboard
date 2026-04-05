@@ -8,7 +8,7 @@ import SummaryCards from "./components/SummaryCards";
 import StockChart from "./components/StockChart";
 import CompareChart from "./components/CompareChart";
 
-const API = "http://localhost:5000/api";
+const API = "https://stockiq-api.onrender.com/api";
 
 export default function App() {
   const [companies, setCompanies] = useState([]);
