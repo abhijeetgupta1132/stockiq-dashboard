@@ -1,0 +1,18 @@
+# Dependencies
+backend/node_modules
+frontend/node_modules
+
+# Database (auto generated when you run prepare-data)
+backend/data/
+
+# Environment variables (contains secrets)
+backend/.env
+
+# Mac system file
+.DS_Store
+
+# Vite build output
+frontend/dist
+
+# Logs
+npm-debug.log
