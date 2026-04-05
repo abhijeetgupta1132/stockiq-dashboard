@@ -9,7 +9,11 @@ const routes = require("./src/routes");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({ origin: "http://localhost:5173" })); // Vite React default port
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://stockiq-dashboard.vercel.app"],
+  }),
+); // Vite React default port
 app.use(express.json());
 app.use("/api", routes); // All routes prefixed with /api
 
