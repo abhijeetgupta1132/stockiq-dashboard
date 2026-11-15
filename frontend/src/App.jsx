@@ -121,7 +121,7 @@ export default function App() {
                 display: "inline-block",
               }}
             />
-            NSE LIVE
+            NSE EOD
           </div>
           <Clock />
         </div>

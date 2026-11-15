@@ -3,6 +3,7 @@
 
 const express = require("express");
 const db = require("./db");
+const { pearsonCorrelation, correlationLabel } = require("./metrics");
 const router = express.Router();
 
 // GET /companies
@@ -86,30 +87,14 @@ router.get("/compare", (req, res) => {
   const a1 = dates.map((d) => map1[d]);
   const a2 = dates.map((d) => map2[d]);
 
-  const mean1 = a1.reduce((a, b) => a + b, 0) / a1.length;
-  const mean2 = a2.reduce((a, b) => a + b, 0) / a2.length;
-  const num = a1.reduce((s, v, i) => s + (v - mean1) * (a2[i] - mean2), 0);
-  const den = Math.sqrt(
-    a1.reduce((s, v) => s + (v - mean1) ** 2, 0) *
-      a2.reduce((s, v) => s + (v - mean2) ** 2, 0),
-  );
-  const correlation = den === 0 ? 0 : +(num / den).toFixed(4);
+  const correlation = pearsonCorrelation(a1, a2);
 
   res.json({
     symbol1: s1,
     symbol2: s2,
     days,
     correlation,
-    interpretation:
-      correlation > 0.7
-        ? "Strong positive correlation"
-        : correlation > 0.3
-          ? "Moderate correlation"
-          : correlation > -0.3
-            ? "Weak or no correlation"
-            : correlation > -0.7
-              ? "Moderate negative correlation"
-              : "Strong negative correlation",
+    interpretation: correlationLabel(correlation),
     data: dates.map((d) => ({ date: d, [s1]: map1[d], [s2]: map2[d] })),
   });
 });

@@ -1,7 +1,9 @@
 # 📈 StockIQ — Stock Data Intelligence Dashboard
 
+[![CI](https://github.com/abhijeetgupta1132/stockiq-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/abhijeetgupta1132/stockiq-dashboard/actions/workflows/ci.yml)
+
 > A full-stack financial data platform built for the JarNox Internship Assignment.
-> Real NSE stock data · REST API · Interactive React Dashboard
+> NSE end-of-day market data · REST API · Interactive React dashboard
 
 ---
 
@@ -15,7 +17,7 @@
 
 ## 🗂️ Project Structure
 
-```
+```text
 stock_dashboard/
 ├── backend/                  # Node.js + Express REST API
 │   ├── src/
@@ -41,6 +43,20 @@ stock_dashboard/
     ├── index.html
     ├── vite.config.js
     └── package.json
+```
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+flowchart LR
+    YF[Yahoo Finance chart API] --> PREP[Node.js data preparation]
+    PREP --> DB[(SQLite)]
+    DB --> API[Express REST API]
+    API --> UI[React + Recharts dashboard]
+    API -. Render .-> WEB[Public backend]
+    UI -. Vercel .-> BROWSER[Public frontend]
 ```
 
 ---
@@ -135,11 +151,13 @@ Data is fetched from **Yahoo Finance API** (free, no API key required).
 - Reflects latest trading session end-of-day prices
 - Refresh data anytime: `npm run prepare-data`
 
+The dashboard is not a live trading feed. Prices update only when the data-preparation command runs and Yahoo Finance has published the latest end-of-day candle.
+
 ---
 
 ## 🎨 Dashboard Features
 
-- ✅ Live clock + NSE Live badge
+- ✅ Live clock + NSE EOD badge
 - ✅ Company watchlist with daily return pills
 - ✅ Market Movers — Top Gainer and Top Loser
 - ✅ 6 summary metric cards (52W High/Low, Avg, Volatility, Return, Date)
@@ -147,6 +165,19 @@ Data is fetched from **Yahoo Finance API** (free, no API key required).
 - ✅ Daily Return bar chart (green = gain, red = loss)
 - ✅ Trading Volume chart
 - ✅ Stock comparison with Pearson correlation score
+
+---
+
+## 🧪 Tests and CI
+
+Run the backend metric tests:
+
+```bash
+cd backend
+npm test
+```
+
+GitHub Actions installs the backend and frontend dependencies, runs the correlation tests, and creates a production frontend build on every push and pull request.
 
 ---
 
